@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Virtual Office for HairCoaction</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #eaf6fb;
+      color: #00334e;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: #00334e;
+    }
+
+    .top-bar {
+      /* position: fixed;
+      width: 100%; */
+      background-color: #b3e5fc;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      /* margin-bottom: 2rem; */
+    }
+    .logo span {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-links li a {
+      padding: 0.5rem 1rem;
+      background-color: #4fc3f7;
+      color: white;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .nav-links li a:hover {
+      background-color: #0288d1;
+    }
+
+    .hero-section {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 3rem 2rem;
+      background-color: #e1f5fe;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hero-content {
+      flex: 1 1 50%;
+      padding: 1rem;
+    }
+
+    .hero-content h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #01579b;
+    }
+
+    .highlights-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .highlight-card {
+      background-color: #ffffff;
+      border-left: 5px solid #4fc3f7;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .highlight-card h3 {
+      color: #0277bd;
+      margin-bottom: 0.5rem;
+    }
+
+    .buttons {
+      margin-top: 1.5rem;
+    }
+
+    .btn-primary {
+      padding: 0.75rem 1.5rem;
+      background-color: #0288d1;
+      color: white;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .btn-primary:hover {
+      background-color: #0277bd;
+    }
+
+    .hero-image {
+      flex: 1 1 40%;
+      text-align: center;
+    }
+
+    .hero-image img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer {
+      background-color: #b3e5fc;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    .footer-content h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-content a {
+      color: #00334e;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .hero-section {
+        flex-direction: column;
+        padding: 2rem 1rem;
+      }
+
+      .hero-content,
+      .hero-image {
+        flex: 1 1 100%;
+      }
+
+      .highlights-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <span>Virtual Office of <b>HairCoaction</b></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="./features/contact.html">Contact us</a></li>
+      <li><a href="./auth/login.html">Login/Register</a></li>
+    </ul>
+  </div>
+
+  <header class="hero-section">
+    <div class="hero-content">
+      <h1>About Hair Coaction</h1>
+
+      <div class="highlights-grid">
+        <div class="highlight-card">
+          <h3>Our Vision</h3>
+          <p>Enhancing hair health and confidence with personalized routines and early diagnosis solutions for every
+            hair type and scalp condition.</p>
+        </div>
+
+        <div class="highlight-card">
+          <h3>Our Solution</h3>
+          <p>AI-driven predictions, dermatologist networks, and curated recommendations tailored to your unique hair
+            concerns.</p>
+        </div>
+
+        <div class="highlight-card">
+          <h3>Our Community</h3>
+          <p>Join workshops, events, and forums to discuss, learn, and share your hair care journey with others.</p>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <a href="login.html" class="btn-primary">Launch Dashboard</a>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <img src="../src/hair.jpg" alt="Hair Care" />
+    </div>
+  </header>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Get in touch</h3>
+      <p>Email: <a href="mailto:haircoaction@gmail.com">haircoaction@gmail.com</a> | Phone: <a
+          href="tel:+916005092270">+91 60050 92270</a></p>
+      <p>&copy; 2025 Virtual Office. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+
+</html>

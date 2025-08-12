@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Redirecting...</title>
+</head>
+<body>
+  <p>Redirecting to your dashboard...</p>
+
+  <script>
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('userRole');
+
+    if (!token || !role) {
+      alert('Please login first.');
+      window.location.href = 'login.html';
+    }
+
+    switch (role) {
+      case 'HR':
+        window.location.href = 'hr-dashboard.html';
+        break;
+      case 'Intern':
+        window.location.href = 'intern-dashboard.html';
+        break;
+      case 'TeamLead':
+        // Placeholder - add later
+        window.location.href = 'teamlead-dashboard.html'
+        // alert('Team Lead dashboard not built yet!');
+        break;
+      case 'Founder':
+        // Placeholder - add later
+        alert('Founder dashboard not built yet!');
+        break;
+      default:
+        alert('Unknown role. Access denied.');
+        window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>

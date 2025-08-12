@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us - Virtual Office</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* Reset & Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #eaf4fc;
+      color: #333;
+    }
+
+    /* === NAVBAR === */
+    .navbar {
+      background-color: #2196f3;
+      color: white;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h1 {
+      font-size: 24px;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+
+    .navbar a:hover,
+    .navbar .active {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* === CONTACT SECTION === */
+    .contact-section {
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, #f0f8ff, #d6ecff);
+      max-width: 900px;
+      margin: 40px auto;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    .contact-section h2 {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+      color: #0d47a1;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .contact-form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #0d47a1;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: 1px solid #b0c4de;
+      background: #fff;
+      margin-bottom: 1.2rem;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: #2196f3;
+    }
+
+    .contact-form button {
+      padding: 0.75rem 1.5rem;
+      background-color: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .contact-form button:hover {
+      background-color: #1976d2;
+    }
+
+    .contact-info {
+      background: #ffffff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid #cbe2f9;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    }
+
+    .contact-info h3 {
+      margin-bottom: 1rem;
+      color: #1976d2;
+    }
+
+    .contact-info p {
+      margin-bottom: 0.8rem;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .contact-info i {
+      margin-right: 0.6rem;
+      color: #2196f3;
+    }
+
+    @media (max-width: 768px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    footer {
+      background-color: #e3f2fd;
+      padding: 1rem 0;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #444;
+      border-top: 1px solid #ccc;
+      margin-top: 3rem;
+    }
+
+    footer span {
+      color: #2196f3;
+      font-weight: 600;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <h1>Virtual Office</h1>
+    <ul>
+      <li><a href="../landing.html">Home</a></li>
+      <!-- <li><a href="meet.html">Meet</a></li>
+      <li><a href="virtualrooms.html">Virtual Rooms</a></li>
+      <li><a href="calendar.html">Calendar</a></li>
+      <li><a href="contact.html">Contact</a></li> -->
+      <li><a href="../auth/login.html">Login / Register</a></li>
+    </ul>
+  </nav>
+
+  <section class="contact-section">
+    <h2><i class="fa-solid fa-envelope-open-text"></i> Contact Us</h2>
+    <div class="contact-grid">
+      <div class="contact-form">
+        <form>
+          <label for="name">Name</label>
+          <input type="text" id="name" placeholder="Full Name">
+
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@example.com">
+
+          <label for="message">Message</label>
+          <textarea id="message" rows="4" placeholder="How can we help you?"></textarea>
+
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+
+      <div class="contact-info">
+        <h3>Reach Us</h3>
+        <p><i class="fas fa-map-marker-alt"></i> Hair Coaction, Panipat, Haryana</p>
+        <p><i class="fas fa-phone-alt"></i> +91 60050 92270</p>
+        <p><i class="fas fa-envelope"></i> haircoaction@gmail.com</p>
+        <p><i class="fas fa-clock"></i> Mon - Fri: 9:30 AM - 5:30 PM</p>
+      </div>
+    </div>
+  </section>
+
+
+</body>
+
+</html>

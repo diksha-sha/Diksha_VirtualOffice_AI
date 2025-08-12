@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Advanced Attendance System</title>
+  <link rel="stylesheet" href="./attendence.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <h1>Virtual Office</h1>
+    <ul>
+      <li><a href="../dashboards/dashboard.html">Go back</a></li>
+    </ul>
+  </nav>
+  <div class="container">
+    <h1>Attendance Tracker</h1>
+
+    <div class="form-section">
+      <input type="text" id="nameInput" placeholder="Full Name" />
+      <input type="email" id="emailInput" placeholder="Email ID" />
+      <input type="email" id="departmentInput" placeholder="Department ID" />
+      <button id="checkInBtn">Check In</button>
+      <button id="checkOutBtn">Check Out</button>
+      <button id="onLeaveBtn">On Leave</button>
+    </div>
+
+    <h2>Attendance Log for <span id="currentDate"></span></h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Status</th>
+          <th>Check-In Time</th>
+          <th>Check-Out Time</th>
+          <th>Total Time</th>
+        </tr>
+      </thead>
+      <tbody id="attendanceTable"></tbody>
+    </table>
+  </div>
+
+  <script src="attendance.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Virtual Office – Register</title>
+  <link rel="stylesheet" href="../log_reg.css" />
+</head>
+<body>
+  <div class="auth-container">
+    <h2>Register for Virtual Office</h2>
+    <form id="registerForm">
+      <input type="text" id="regName" placeholder="Name" required />
+      <input type="email" id="regEmail" placeholder="Email" required />
+      <input type="password" id="regPassword" placeholder="Password" required />
+      <select id="regRole">
+        <option value="Intern">Intern</option>
+        <option value="HR">HR</option>
+        <option value="TeamLead">TeamLead</option>
+        <!-- <option value="Founder">Founder</option> -->
+      </select>
+      <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="./login.html">Login here</a></p>
+  </div>
+  <script src="../script.js"/>
+</body>
+</html>

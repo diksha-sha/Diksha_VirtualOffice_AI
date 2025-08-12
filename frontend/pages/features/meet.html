@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meet | Virtual Office</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Reset & Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #eaf4fc;
+      color: #333;
+    }
+
+    /* === NAVBAR === */
+    .navbar {
+      background-color: #2196f3;
+      color: white;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h1 {
+      font-size: 24px;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+
+    .navbar a:hover,
+    .navbar .active {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* === MEET SECTION === */
+    .meet-container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .meet-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .meet-header h2 {
+      font-size: 2.2rem;
+      color: #0d47a1;
+      margin-bottom: 10px;
+    }
+
+    .meet-header p {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    /* === MEETING GRID === */
+    .meeting-grid-container {
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .meeting-grid {
+      display: flex;
+      gap: 1rem;
+      min-width: max-content;
+    }
+
+    .meeting-card {
+      background: #ffffff;
+      border: 1px solid #cbe2f9;
+      border-radius: 10px;
+      padding: 20px;
+      min-width: 220px;
+      flex-shrink: 0;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease;
+    }
+
+    .meeting-card h3 {
+      color: #1976d2;
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+    }
+
+    .meeting-card a {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: #2196f3;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.3s;
+    }
+
+    .meeting-card a:hover {
+      background-color: #1976d2;
+    }
+
+    .meeting-card:hover {
+      transform: translateY(-5px);
+    }
+
+    /* === PLACEHOLDER BOXES === */
+    .feature-placeholder {
+      background: #f2f8ff;
+      border: 1px solid #dbeaff;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .feature-placeholder h3 {
+      color: #0d47a1;
+      margin-bottom: 8px;
+    }
+
+    .feature-placeholder p {
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    /* === SCROLLBAR STYLE === */
+    .meeting-grid-container::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .meeting-grid-container::-webkit-scrollbar-thumb {
+      background-color: #90caf9;
+      border-radius: 10px;
+    }
+
+    .meeting-grid-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    @media (max-width: 768px) {
+      .meeting-card {
+        min-width: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <h1>Virtual Office</h1>
+    <ul>
+      <li><a href="../dashboards/dashboard.html">Go back</a></li>
+      <!-- <li><a href="meet.html" class="active">Meet</a></li>
+      <li><a href="virtualrooms.html">Virtual Rooms</a></li>
+      <li><a href="calendar.html">Calendar</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="login.html">Login / Register</a></li> -->
+    </ul>
+  </nav>
+
+  <!-- Meet Page Content -->
+  <section class="meet-container">
+    <div class="meet-header">
+      <h2><i class="fa-solid fa-video"></i> Team Meetings & Calls</h2>
+      <p>Join or host meetings seamlessly. Stay connected with your team.</p>
+    </div>
+
+    <!-- Meeting Links Horizontal Scroll -->
+    <div class="meeting-grid-container">
+      <div class="meeting-grid">
+        <div class="meeting-card">
+          <h3>Meeting Room 1</h3>
+          <a href="https://YOUR_SUBDOMAIN.daily.co/room1" target="_blank">Join Now</a>
+        </div>
+        <div class="meeting-card">
+          <h3>Meeting Room 2</h3>
+          <a href="https://YOUR_SUBDOMAIN.daily.co/room2" target="_blank">Join Now</a>
+        </div>
+        <div class="meeting-card">
+          <h3>Meeting Room 3</h3>
+          <a href="https://YOUR_SUBDOMAIN.daily.co/room3" target="_blank">Join Now</a>
+        </div>
+        <div class="meeting-card">
+          <h3>Meeting Room 4</h3>
+          <a href="https://YOUR_SUBDOMAIN.daily.co/room4" target="_blank">Join Now</a>
+        </div>
+        <div class="meeting-card">
+          <h3>Meeting Room 5</h3>
+          <a href="https://YOUR_SUBDOMAIN.daily.co/room5" target="_blank">Join Now</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Call Placeholder -->
+    <div class="feature-placeholder">
+      <h3><i class="fa-solid fa-video-slash"></i> Live Video Call</h3>
+      <p>Video call integration will appear here in the upcoming build phase.</p>
+    </div>
+
+    <!-- Chat Placeholder -->
+    <div class="feature-placeholder">
+      <h3><i class="fa-solid fa-comments"></i> Meeting Chat</h3>
+      <p>Real-time chat will be integrated here for team discussions during meetings.</p>
+    </div>
+  </section>
+
+</body>
+</html>

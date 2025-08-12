@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>HR Dashboard – Virtual Office</title>
+  <style>
+    :root {
+      --primary-color: #0288d1;
+      --light-bg: #eaf6fb;
+      --card-bg: #ffffff;
+      --text-color: #00334e;
+      --border-color: #cce7f6;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      /* padding: 30px; */
+      background-color: var(--light-bg);
+      color: var(--text-color);
+    }
+
+    .container {
+
+      max-width: 750px;
+      margin: auto;
+      background-color: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    h2,
+    h3 {
+      color: var(--primary-color);
+      margin-bottom: 20px;
+    }
+
+    form input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      transition: 0.3s ease;
+    }
+
+    form input:focus {
+      border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 5px rgba(2, 136, 209, 0.3);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #0277bd;
+    }
+
+    table {
+      margin-top: 25px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      text-align: left;
+    }
+
+    th {
+      background-color: #b3e5fc;
+      color: var(--text-color);
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f9fc;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+
+      table,
+      th,
+      td {
+        font-size: 0.95rem;
+      }
+    }
+
+    .top-bar {
+      /* position: fixed;
+      width: 100%; */
+      background-color: #b3e5fc;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      /* margin-bottom: 2rem; */
+    }
+
+    .logo span {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-links li a {
+      padding: 0.5rem 1rem;
+      background-color: #4fc3f7;
+      color: white;
+      border-radius: 5px;
+      transition: background 0.3s;
+      text-decoration: none;
+    }
+
+    .nav-links li a:hover {
+      background-color: #0288d1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <span>Virtual Office of <b>HairCoaction</b></span>
+    </div>
+    <ul class="nav-links">
+      <li><a class="nav-links " href="../features/meet.html">Meetings</a></li>
+      <li><a class="nav-links" href="../calender/calendar.html">Calendar</a></li>
+      <li><a class="nav-links" href="../features/fileupload.html">Files</a></li>
+      <li><a class="nav-links" href="../attendence/attendence.html">Attendence</a></li>
+      <li><a class="nav-links" href="../features/chat.html">Communication</a></li>
+      <li><button id="logoutBtn">Logout</button>
+      </li>
+    </ul>
+  </div>
+  <div style="margin-top: 2rem;" class="container">
+    <h2>HR Dashboard – Manage Interns</h2>
+
+    <p id="greeting">Welcome, HR!</p>
+    <br>
+    <form id="internForm">
+      <input type="text" id="name" placeholder="Intern Name" required />
+      <input type="email" id="email" placeholder="Intern Email" required />
+      <input type="text" id="department" placeholder="Department" required />
+      <button type="submit">Add Intern</button>
+    </form>
+
+    <h3>All Interns</h3>
+    <table id="internTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Department</th>
+          <th>Progress</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Intern list will be loaded here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const token = localStorage.getItem("token");
+    if (!token) window.location.href = "index.html";
+
+    const userName = localStorage.getItem("userName") || "Intern";
+
+    document.getElementById('greeting').innerText = `Welcome, ${userName}`
+
+    const form = document.getElementById("internForm");
+    const tableBody = document.querySelector("#internTable tbody");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const department = document.getElementById("department").value;
+
+      const res = await fetch("http://localhost:5000/api/hr/interns", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ name, email, department })
+      });
+
+      if (res.ok) {
+        alert("Intern added!");
+        loadInterns(); // Refresh list
+        form.reset();
+      } else {
+        alert("Failed to add intern");
+      }
+    });
+
+    async function loadInterns() {
+      const res = await fetch("http://localhost:5000/api/hr/interns", {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      });
+
+      const data = await res.json();
+      tableBody.innerHTML = "";
+
+      data.forEach(i => {
+        tableBody.innerHTML += `
+          <tr>
+            <td>${i.name}</td>
+            <td>${i.email}</td>
+            <td>${i.department}</td>
+            <td>${i.progress || 0}%</td>
+          </tr>
+        `;
+      });
+    }
+
+    loadInterns();
+
+    //logout button
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.clear(); // Clear all session data
+      window.location.href = "../auth/login.html"; // Redirect to login
+    });
+
+    // Optional: prevent navigating back to dashboard using browser back button
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = function () {
+      window.history.pushState(null, "", window.location.href);
+    };
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Chat</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #cbe7ff, #e8f3ff);
+    margin: 0;
+    padding: 0;
+  }
+
+  #chat-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 80, 160, 0.1);
+    border: 1px solid #d0e8ff;
+  }
+
+  h3 {
+    text-align: center;
+    color: #0077cc;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+
+  #messages {
+    height: 320px;
+    overflow-y: auto;
+    border-radius: 8px;
+    background: #f0f8ff;
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #c2e0ff;
+    scroll-behavior: smooth;
+  }
+
+  .message {
+    padding: 8px 12px;
+    margin: 6px 0;
+    border-radius: 8px;
+    background: #e6f3ff;
+    box-shadow: 0px 1px 3px rgba(0, 50, 100, 0.1);
+    animation: fadeIn 0.3s ease-in-out;
+    word-break: break-word;
+  }
+
+  .message strong {
+    color: #005b99;
+  }
+
+  #chat-form {
+    display: flex;
+    gap: 8px;
+  }
+
+  #msg {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #a9d3ff;
+    outline: none;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+  #msg:focus {
+    border-color: #0077cc;
+  }
+
+  #send {
+    padding: 10px 16px;
+    background: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background 0.3s;
+  }
+  #send:hover {
+    background: #005fa3;
+  }
+
+  /* Scrollbar Styling */
+  #messages::-webkit-scrollbar {
+    width: 8px;
+  }
+  #messages::-webkit-scrollbar-thumb {
+    background: #99cfff;
+    border-radius: 4px;
+  }
+
+  /* Animation */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(3px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div id="chat-container">
+  <h3>💬 Global Chat</h3>
+  <div id="messages"></div>
+  <form id="chat-form">
+    <input id="msg" type="text" placeholder="Type a message..." autocomplete="off" required>
+    <button id="send">Send</button>
+  </form>
+</div>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+  const socket = io("http://localhost:5000");
+
+  // Fetch username from localStorage
+  const username = localStorage.getItem('userName') || 'Guest';
+
+  const messagesDiv = document.getElementById('messages');
+  const form = document.getElementById('chat-form');
+  const input = document.getElementById('msg');
+
+  // Display message in chat
+  function appendMessage(msg) {
+    const div = document.createElement('div');
+    div.classList.add('message');
+    div.innerHTML = `<strong>${msg.username}</strong>: ${msg.text}`;
+    messagesDiv.appendChild(div);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+
+  // Load chat history
+  socket.on('chatHistory', (msgs) => {
+    messagesDiv.innerHTML = '';
+    msgs.forEach(appendMessage);
+  });
+
+  // New incoming message
+  socket.on('chatMessage', appendMessage);
+
+  // Send message
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (input.value.trim() === '') return;
+    socket.emit('chatMessage', { username, text: input.value });
+    input.value = '';
+  });
+</script>
+
+</body>
+</html>

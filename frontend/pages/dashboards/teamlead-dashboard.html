@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Team Lead Dashboard – Virtual Office</title>
+  <style>
+    :root {
+      --primary-color: #0288d1;
+      --light-bg: #eaf6fb;
+      --card-bg: #ffffff;
+      --text-color: #00334e;
+      --border-color: #cce7f6;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background-color: var(--light-bg); color: var(--text-color); }
+    .top-bar {
+      background-color: #b3e5fc;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .logo span { font-size: 1.2rem; font-weight: bold; color: var(--text-color); }
+    .nav-links { list-style: none; display: flex; gap: 1rem; }
+    .nav-links button {
+      background-color: #0288d1;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .nav-links button:hover { background-color: #0277bd; }
+    .nav-links li a {
+      padding: 0.5rem 1rem;
+      background-color: #4fc3f7;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .nav-links li a:hover { background-color: #0288d1; }
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      background-color: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+    h2, h3 { color: var(--primary-color); margin-bottom: 15px; }
+    #greeting { margin-bottom: 25px; font-weight: 500; color: #555; }
+    form { margin-bottom: 30px; }
+    input, textarea {
+      width: 100%; padding: 12px; margin-bottom: 15px;
+      font-size: 1rem; border: 1px solid var(--border-color); border-radius: 8px;
+    }
+    input:focus, textarea:focus {
+      border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 5px rgba(2, 136, 209, 0.3);
+    }
+    button[type="submit"] {
+      width: 100%; padding: 12px; font-size: 1rem;
+      background-color: var(--primary-color); color: white; border: none; border-radius: 8px;
+      cursor: pointer; font-weight: bold;
+    }
+    button[type="submit"]:hover { background-color: #0277bd; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 12px; border: 1px solid var(--border-color); text-align: left; }
+    th { background-color: #b3e5fc; }
+    tr:nth-child(even) { background-color: #f2f9fc; }
+    .chat-preview {
+      margin-top: 40px;
+      background-color: #f0f9ff;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .chat-message { padding: 8px; border-bottom: 1px solid #cce7f6; }
+    .chat-message:last-child { border-bottom: none; }
+  </style>
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo"><span>Virtual Office of <b>HairCoaction</b></span></div>
+    <ul class="nav-links">
+      <li><a href="../features/meet.html">Meetings</a></li>
+      <li><a href="../calender/calendar.html">Calendar</a></li>
+      <li><a href="../features/fileupload.html">Files</a></li>
+      <li><a href="../attendence/attendence.html">Attendance</a></li>
+      <li><a href="../features/chat.html">Communication</a></li>
+      <li><button id="logoutBtn">Logout</button></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <h2>Team Lead Dashboard</h2>
+    <p id="greeting">Welcome, Team Lead!</p>
+
+    <h3>Assign Task</h3>
+    <form id="taskForm">
+      <input type="text" id="assignedTo" placeholder="Teammate Email" required />
+      <input type="text" id="title" placeholder="Task Title" required />
+      <textarea id="description" placeholder="Task Description" rows="3" required></textarea>
+      <button type="submit">Assign Task</button>
+    </form>
+
+    <h3>Team Tasks</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Assigned To</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="taskTable"></tbody>
+    </table>
+
+    <div class="chat-preview">
+      <h3>Today's Global Chat</h3>
+      <div id="chatMessages"></div>
+      <a href="../features/chat.html" style="color: var(--primary-color); text-decoration: underline;">Go to full chat</a>
+    </div>
+  </div>
+
+  <script>
+    const token = localStorage.getItem("token");
+    const userName = localStorage.getItem("userName");
+
+    // Redirect if not logged in
+    if (!token || !userName) {
+      window.location.href = "../auth/login.html";
+    }
+
+    document.getElementById("greeting").innerText = `Welcome, ${userName}`;
+
+    const form = document.getElementById("taskForm");
+    const taskTable = document.getElementById("taskTable");
+    const chatMessagesDiv = document.getElementById("chatMessages");
+
+    // Assign task
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+      const assignedTo = document.getElementById("assignedTo").value;
+
+      try {
+        const res = await fetch("http://localhost:5000/api/tasks", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({ title, description, assignedTo }),
+        });
+
+        if (res.ok) {
+          alert("Task assigned successfully!");
+          loadTasks();
+          form.reset();
+        } else {
+          const data = await res.json();
+          alert(data.msg || "Failed to assign task.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Server error.");
+      }
+    });
+
+    // Load tasks
+    async function loadTasks() {
+      try {
+        const res = await fetch("http://localhost:5000/api/teamlead/tasks", {
+          headers: { Authorization: "Bearer " + token },
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch tasks");
+
+        const tasks = await res.json();
+        taskTable.innerHTML = "";
+        tasks.forEach((task) => {
+          taskTable.innerHTML += `
+            <tr>
+              <td>${task.assignedTo}</td>
+              <td>${task.title}</td>
+              <td>${task.description}</td>
+              <td>${task.status}</td>
+            </tr>
+          `;
+        });
+      } catch (err) {
+        console.error("Failed to load tasks:", err);
+      }
+    }
+
+    // Load today's global chat preview
+    async function loadChatPreview() {
+      try {
+        const res = await fetch("http://localhost:5000/api/chat/today", {
+          headers: { Authorization: "Bearer " + token },
+        });
+        if (!res.ok) throw new Error("Chat fetch failed");
+
+        const chats = await res.json();
+        chatMessagesDiv.innerHTML = chats
+          .map(c => `<div class="chat-message"><b>${c.author}</b>: ${c.message}</div>`)
+          .join("");
+      } catch (err) {
+        console.error("Chat load error:", err);
+        chatMessagesDiv.innerHTML = "<i>Unable to load chat preview</i>";
+      }
+    }
+
+    // Logout
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "../auth/login.html";
+    });
+
+    loadTasks();
+    loadChatPreview();
+  </script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Intern Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #e6f2ff;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    .top-bar {
+      background-color: #b3e5fc;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo span {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #004d66;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links li {
+      margin: 0;
+    }
+
+    .nav-links li button {
+      padding: 0.5rem 1rem;
+      background-color: #4fc3f7;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background 0.3s;
+    }
+
+    .nav-links li button:hover {
+      background-color: #0288d1;
+    }
+
+    .nav-links li a {
+      padding: 0.5rem 1rem;
+      background-color: #4fc3f7;
+      color: white;
+      border-radius: 5px;
+      transition: background 0.3s;
+      text-decoration: none;
+    }
+
+    .nav-links li a:hover {
+      background-color: #0288d1;
+    }
+
+    .card {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 800px;
+      margin: 2rem auto;
+      text-align: center;
+    }
+
+    h2 {
+      color: #007acc;
+      margin-bottom: 10px;
+    }
+
+    #info {
+      font-size: 16px;
+      margin-bottom: 25px;
+      color: #444;
+    }
+
+    h3 {
+      color: #005f99;
+      margin-bottom: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th,
+    td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ccc;
+    }
+
+    th {
+      background-color: #cce6ff;
+      color: #003d66;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2faff;
+    }
+
+    tr:hover {
+      background-color: #d9f0ff;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    @media (max-width: 600px) {
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      table,
+      thead,
+      tbody,
+      th,
+      td,
+      tr {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      td {
+        position: relative;
+        padding-left: 50%;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        top: 12px;
+        font-weight: bold;
+        color: #005f99;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo">
+      <span>Virtual Office of <b>HairCoaction</b></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="../features/meet.html">Meetings</a></li>
+      <li><a href="../calender/calendar.html">Calendar</a></li>
+      <li><a href="../features/fileupload.html">Files</a></li>
+      <li><a href="../attendence/attendence.html">Attendance</a></li>
+      <li><a href="../features/chat.html">Communication</a></li>
+      <li><button id="logoutBtn">Logout</button></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Intern Progress Dashboard</h2>
+    <p id="greeting">Welcome, Intern!</p>
+    <p id="info">Loading progress...</p>
+
+    <h3>Your Assigned Tasks</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="taskTable"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const token = localStorage.getItem("token");
+    const storedName = localStorage.getItem("userName");
+
+    // Redirect to login if no token
+    if (!token) {
+      window.location.href = "../auth/login.html";
+    }
+
+    // Decode JWT to check payload if needed
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const userName = storedName || payload.name || "Intern";
+
+    // Greet user
+    document.getElementById('greeting').innerText = `Welcome, ${userName}!`;
+
+    async function loadProgress() {
+      try {
+        const res = await fetch(`http://localhost:5000/api/tasks/progress`, {
+          headers: { Authorization: "Bearer " + token }
+        });
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        document.getElementById("info").innerText = `Your current progress: ${data.progress}%`;
+      } catch (err) {
+        document.getElementById("info").innerText = "Unable to fetch progress.";
+      }
+    }
+
+    async function loadTasks() {
+      try {
+        const res = await fetch("http://localhost:5000/api/intern/tasks", {
+          headers: { Authorization: "Bearer " + token }
+        });
+        if (!res.ok) throw new Error();
+        const tasks = await res.json();
+        const taskTable = document.getElementById("taskTable");
+        taskTable.innerHTML = "";
+        tasks.forEach(t => {
+          taskTable.innerHTML += `
+        <tr>
+          <td data-label="Title">${t.title}</td>
+          <td data-label="Description">${t.description}</td>
+          <td data-label="Status">
+            <select onchange="updateStatus('${t._id}', this.value)">
+              <option value="Pending" ${t.status === "Pending" ? "selected" : ""}>Pending</option>
+              <option value="In Progress" ${t.status === "In Progress" ? "selected" : ""}>In Progress</option>
+              <option value="Completed" ${t.status === "Completed" ? "selected" : ""}>Completed</option>
+            </select>
+          </td>
+        </tr>`;
+        });
+      } catch (err) {
+        document.getElementById("taskTable").innerHTML = `<tr><td colspan="3">Unable to load tasks</td></tr>`;
+      }
+    }
+
+    async function updateStatus(taskId, status) {
+      try {
+        const res = await fetch(`http://localhost:5000/api/intern/tasks/${taskId}/status`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
+          },
+          body: JSON.stringify({ status })
+        });
+        if (!res.ok) throw new Error();
+        const updatedTask = await res.json();
+        console.log("Task updated:", updatedTask);
+      } catch (err) {
+        alert("Failed to update status");
+      }
+    }
+
+    // Load data
+    loadProgress();
+    loadTasks();
+
+    // Logout logic
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "../auth/login.html";
+    });
+
+    // Prevent navigating back to dashboard after logout
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = function () {
+      window.history.pushState(null, "", window.location.href);
+    };
+  </script>
+</body>
+
+</html>
